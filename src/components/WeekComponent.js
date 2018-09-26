@@ -20,13 +20,14 @@ class WeekComponent extends Component {
     }
   }
   render() {
+    console.log('props', this.props)
     return (
-      <section>
+      <section className="m-5">
         <label>Weeks:</label>
         <select>
           {this.props.todoItems.map(item => {
             return (
-              <option value={item.id}>{item.content}</option>
+              <option key={item.id} value={item.id}>{item.content}</option>
             );
           })}
         </select>
@@ -41,7 +42,7 @@ class WeekComponent extends Component {
                   {day.format('ddd')}
                   &nbsp;
                 </label>
-                <input className="day-input" />
+                <input type="number" className="day-input text-right" />
               </div>
             );
           })}

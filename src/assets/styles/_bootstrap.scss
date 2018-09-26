@@ -1,0 +1,12 @@
+@import 'colors';
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "tertiary": $tertiary,
+  "quaternary": $quaternary,
+  "success": $success,
+  "danger": $danger
+);
+
+@import '../vendors/bootstrap/scss/bootstrap.scss';
