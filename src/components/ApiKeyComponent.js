@@ -124,7 +124,7 @@ class AppComponent extends Component {
 
   render() {
     return (
-      <form className="m-5" onSubmit={this.testAPIKey}>
+      <form className="my-5 mx-1 mx-md-5" onSubmit={this.testAPIKey}>
         <div className="form-group row">
           <label htmlFor="api-key" className="col-md-2 col-form-label">API Key</label>
           <div className="col-md-10 col-lg-6">
@@ -150,7 +150,7 @@ class AppComponent extends Component {
           />
           <label className="form-check-label" htmlFor="remember-me">Remember me (Locally)</label>
         </div>
-        <div className="form-group row offset-md-2">
+        <div className="form-group d-flex flex-wrap offset-md-2">
           <button
             type="submit"
             className="btn btn-primary col-12 col-md-4 col-lg-2"
@@ -165,7 +165,7 @@ class AppComponent extends Component {
           {
             this.state.testingOutput.status !== null
             ? (
-              <div className="d-flex align-items-center ml-3">
+              <div className="d-flex align-items-center ml-3 my-2 my-md-0">
                   {this.renderStatusIcon(this.state.testingOutput.status)}
                 <span className="text-primary">
                   {

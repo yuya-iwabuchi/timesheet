@@ -22,31 +22,38 @@ class WeekComponent extends Component {
   render() {
     console.log('props', this.props)
     return (
-      <section className="m-5">
-        <label>Weeks:</label>
-        <select>
-          {this.props.todoItems.map(item => {
-            return (
-              <option key={item.id} value={item.id}>{item.content}</option>
-            );
-          })}
-        </select>
-        <div className="week">
-          {this.state.days.map(day => {
-            return (
-              <div className="day" key={day.format()}>
-                <label>
-                  &nbsp;
-                  {day.format('MM-DD')}
-                  &nbsp;<wbr />&nbsp;
-                  {day.format('ddd')}
-                  &nbsp;
-                </label>
-                <input type="number" className="day-input text-right" />
-              </div>
-            );
-          })}
-        </div>
+      <section className="my-5 mx-1 mx-md-5">
+        <form>
+          <div className="form-group">
+            <label htmlFor="taskInput">Tasks</label>
+            <select id="taskInput" className="form-control">
+              <option value=''>Please Select</option>
+              {this.props.todoItems.map(item => {
+                return (
+                  <option key={item.id} value={item.id}>{item.content}</option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="day my-4 p-4 border">
+            {this.state.days.map(day => {
+              return [
+                <span key={`${day.day()}-day-label`} className="day-day-label">
+                  {day.format('dddd')}
+                </span>,
+                <span key={`${day.day()}-date-label`} className="day-date-label pb-3">
+                  {day.format('MMM-DD')}
+                </span>,
+                <div key={`${day.day()}-input`} className="day-input">
+                  <input type="number" className="form-control text-right" />
+                </div>,
+              ];
+            })}
+          </div>
+          <div className="d-flex justify-content-center">
+            <button type="submit" className="btn btn-lg btn-primary col-12 col-md-4 col-lg-2">Submit</button>
+          </div>
+        </form>
       </section>
     );
   }
