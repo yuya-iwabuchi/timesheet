@@ -124,7 +124,8 @@ class AppComponent extends Component {
 
   render() {
     return (
-      <form className="my-5 mx-1 mx-md-5" onSubmit={this.testAPIKey}>
+      <form className="mt-3 mb-5 mx-1 mx-md-5" onSubmit={this.testAPIKey}>
+        <h5 className="mb-4 font-weight-bold">Step 1: Setup API Key</h5>
         <div className="form-group row">
           <label htmlFor="api-key" className="col-md-2 col-form-label">API Key</label>
           <div className="col-md-10 col-lg-6">

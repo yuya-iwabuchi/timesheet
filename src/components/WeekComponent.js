@@ -22,7 +22,8 @@ class WeekComponent extends Component {
   render() {
     console.log('props', this.props)
     return (
-      <section className="my-5 mx-1 mx-md-5">
+      <section className="mt-3 mb-5 mx-1 mx-md-5">
+        <h5 className="mb-4 font-weight-bold">Step 2: Submit Timesheet</h5>
         <form>
           <div className="form-group">
             <label htmlFor="taskInput">Tasks</label>
