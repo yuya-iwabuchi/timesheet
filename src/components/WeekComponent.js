@@ -9,25 +9,43 @@ class WeekComponent extends Component {
     const startOfWeek = dayjs().startOf('week'); // Sunday
     this.state = {
       days: [
-        startOfWeek.add(1, 'day'), // Monday
-        startOfWeek.add(2, 'day'),
-        startOfWeek.add(3, 'day'),
-        startOfWeek.add(4, 'day'),
-        startOfWeek.add(5, 'day'),
-        startOfWeek.add(6, 'day'),
-        startOfWeek.add(7, 'day'), // Sunday
+        { date: startOfWeek.add(1, 'day'), hours: '' }, // Monday
+        { date: startOfWeek.add(2, 'day'), hours: '' },
+        { date: startOfWeek.add(3, 'day'), hours: '' },
+        { date: startOfWeek.add(4, 'day'), hours: '' },
+        { date: startOfWeek.add(5, 'day'), hours: '' },
+        { date: startOfWeek.add(6, 'day'), hours: '' },
+        { date: startOfWeek.add(7, 'day'), hours: '' }, // Sunday
       ],
+      selectedTodoItem: null,
     }
+
+    this.onTodoItemChange = this.onTodoItemChange.bind(this);
+    this.onHoursEnter = this.onHoursEnter.bind(this);
   }
+
+  onTodoItemChange(event) {
+    const selectedTodoItem = this.props.todoItems.find(todoItem => todoItem.id.toString() === event.target.value);
+    this.setState( { selectedTodoItem });
+  }
+
+  onHoursEnter(event, day) {
+    const hours = +event.target.value;
+    this.setState({
+      days: this.state.days.map(oldDay => oldDay === day ? Object.assign({}, oldDay, { hours }) : oldDay),
+    })
+
+  }
+
   render() {
-    console.log('props', this.props)
+    console.log('state', this.state);
     return (
-      <section className="mt-3 mb-5 mx-1 mx-md-5">
+      <section className="mt-3 mb-5 mx-1 mx-sm-2 mx-lg-5">
         <h5 className="mb-4 font-weight-bold">Step 2: Submit Timesheet</h5>
         <form>
           <div className="form-group">
             <label htmlFor="taskInput">Tasks</label>
-            <select id="taskInput" className="form-control">
+            <select id="taskInput" className="form-control" onChange={this.onTodoItemChange}>
               <option value=''>Please Select</option>
               {this.props.todoItems.map(item => {
                 return (
@@ -39,14 +57,19 @@ class WeekComponent extends Component {
           <div className="day my-4 p-4 border">
             {this.state.days.map(day => {
               return [
-                <span key={`${day.day()}-day-label`} className="day-day-label">
-                  {day.format('dddd')}
+                <span key={`${day.date.day()}-day-label`} className="day-day-label">
+                  {day.date.format('dddd')}
                 </span>,
-                <span key={`${day.day()}-date-label`} className="day-date-label pb-3">
-                  {day.format('MMM-DD')}
+                <span key={`${day.date.day()}-date-label`} className="day-date-label pb-3">
+                  {day.date.format('MMM-DD')}
                 </span>,
-                <div key={`${day.day()}-input`} className="day-input">
-                  <input type="number" className="form-control text-right" />
+                <div key={`${day.date.day()}-input`} className="day-input">
+                  <input
+                    type="number"
+                    className="form-control text-right"
+                    onChange={event => this.onHoursEnter(event, day)}
+                    value={day.hours}
+                  />
                 </div>,
               ];
             })}

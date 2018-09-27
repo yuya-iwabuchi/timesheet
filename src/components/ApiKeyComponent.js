@@ -29,14 +29,12 @@ class AppComponent extends Component {
 
   onAPIKeyChange(event) {
     const apiKey = event.target.value;
-    console.log(apiKey);
     this.setState({ apiKey });
     this.setLocalStorage(apiKey, this.state.rememberMe);
   }
 
   onRememberMeChange(event) {
     const rememberMe = event.target.checked;
-    console.log(rememberMe);
     this.setState({ rememberMe });
     this.setLocalStorage(this.state.apiKey, rememberMe);
   }
@@ -47,7 +45,6 @@ class AppComponent extends Component {
     let rememberMe = localStorage.getItem('rememberMe');
     if (rememberMe === null) rememberMe = false;
     else rememberMe = rememberMe === 'true';
-    console.log(apiKey, rememberMe);
     this.setState({ apiKey, rememberMe });
   }
 
@@ -77,7 +74,6 @@ class AppComponent extends Component {
     fetch(url, { headers })
       .then(res => res.json())
       .then(res => {
-        console.log('res', res);
         if (res.status === 'OK' || res.STATUS === 'OK') {
           this.setState({
             testingOutput: {
@@ -96,7 +92,6 @@ class AppComponent extends Component {
         }
       })
       .catch((err) => {
-        console.log(err, err.message);
         this.setState({
           testingOutput: {
             status: 'failure',
@@ -124,7 +119,7 @@ class AppComponent extends Component {
 
   render() {
     return (
-      <form className="mt-3 mb-5 mx-1 mx-md-5" onSubmit={this.testAPIKey}>
+      <form className="mt-3 mb-5 mx-1 mx-sm-2 mx-lg-5" onSubmit={this.testAPIKey}>
         <h5 className="mb-4 font-weight-bold">Step 1: Setup API Key</h5>
         <div className="form-group row">
           <label htmlFor="api-key" className="col-md-2 col-form-label">API Key</label>
