@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import dayjs from 'dayjs';
 
 import './WeekComponent.scss';
+import { SpinnerComponent } from './SpinnerComponent';
 
 const DOMAIN = 'https://blanclink.teamwork.com';
 
@@ -39,6 +40,7 @@ class WeekComponent extends Component {
         '',
       ],
       selectedTodoItem: null,
+      submitting: false,
     }
 
     this.onTodoItemChange = this.onTodoItemChange.bind(this);
@@ -104,11 +106,12 @@ class WeekComponent extends Component {
     event.preventDefault();
     event.stopPropagation();
 
+    this.setState({ submitting: true });
+
     const week = this.state.days.map((day, index) => ({
       date: day,
       hours: this.state.hours[index],
     }));
-    console.log(week, this.props);
     
     const createUrl = todoId => `${DOMAIN}/tasks/${todoId}/time_entries.json`;
     week
@@ -136,6 +139,7 @@ class WeekComponent extends Component {
             if (res.status === 'OK' || res.STATUS === 'OK') {
               this.setState({
                 submitStatuses: this.state.submitStatuses.map((submitStatus, i) => i === index ? 'success' : submitStatus),
+                submitting: false,
               });
             } else {
               throw Error(res.error);
@@ -168,7 +172,7 @@ class WeekComponent extends Component {
   canSubmit() {
     const todoItemSelected = this.state.selectedTodoItem !== null && this.state.selectedTodoItem !== '';
     const someHoursEntered = this.state.hours.some(hours => hours !== '' && hours !== 0);
-    return todoItemSelected && someHoursEntered;
+    return todoItemSelected && someHoursEntered && !this.state.submitting;
   }
 
   statusToClass(status) {
@@ -275,7 +279,11 @@ class WeekComponent extends Component {
               className="btn btn-lg btn-primary col-12 col-md-4 col-lg-2"
               disabled={!this.canSubmit()}
             >
-              Submit
+              {
+                this.state.submitting
+                  ? <SpinnerComponent />
+                  : <span>Submit</span>
+              }
             </button>
           </div>
         </form>
