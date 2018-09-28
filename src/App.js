@@ -36,18 +36,30 @@ class AppComponent extends Component {
       <div>
         <nav className="navbar navbar-light bg-quaternary">
           <span className="navbar-brand mb-0 h1 text-light">Timesheet</span>
+          <div className="div-inline">
+            <a
+              className="btn btn-outline-light"
+              href="http://freesuggestionbox.com/pub/wltpkcg"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Leave a suggestion!
+            </a>
+          </div>
         </nav>
-        <main className="container border mt-5">
-          <ApiKeyComponent setApiKey={this.setApiKey} setTodoItems={this.setTodoItems} setAccount={this.setAccount} />
+        <main className="py-5">
+          <section className="container border">
+            <ApiKeyComponent setApiKey={this.setApiKey} setTodoItems={this.setTodoItems} setAccount={this.setAccount} />
+          </section>
+          {
+            this.state.todoItems !== null && this.state.account !== null
+            ? (
+              <section className="container border my-5">
+                  <WeekComponent apiKey={this.state.apiKey} todoItems={this.state.todoItems} account={this.state.account} />
+              </section>
+            ) : null
+          }
         </main>
-        {
-          this.state.todoItems !== null && this.state.account !== null
-          ? (
-            <section className="container border my-5">
-                <WeekComponent apiKey={this.state.apiKey} todoItems={this.state.todoItems} account={this.state.account} />
-            </section>
-          ) : null
-        }
       </div>
     );
   }

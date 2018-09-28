@@ -126,6 +126,7 @@ class WeekComponent extends Component {
               time: '09:30',
               hours: Math.floor(day.hours),
               minutes: Math.floor((day.hours % 1) * 60),
+              isbillable: '1',
             },
           })
         })
@@ -186,11 +187,21 @@ class WeekComponent extends Component {
     console.log('state', this.state);
     return (
       <section className="mt-3 mb-5 mx-1 mx-sm-2 mx-lg-5" ref={ref => this.mainElement = ref}>
-        <h5 className="mb-4 font-weight-bold">Step 2: Submit Timesheet</h5>
+        <h5 className="mb-2 font-weight-bold">Step 2: Submit Timesheet</h5>
+        <div className="row">
+          <small id="task-select-help" className="form-text text-muted mb-4 col-12 col-md-8">
+            Note - Currently many things are set by default:
+            <ul>
+              <li>Billable by default</li>
+              <li>9:30AM start time</li>
+              <li>Enter hours only by whole number</li>
+            </ul>
+          </small>
+        </div>
         <form onSubmit={this.onSubmit}>
           <div className="form-group row">
             <label htmlFor="taskInput" className="col-md-2 col-form-label">Task</label>
-            <div className="col-md-10 col-lg-6">
+            <div className="col-md-10 col-lg-auto">
               <select id="taskInput" className="form-control" onChange={this.onTodoItemChange} aria-describedby="task-select-help">
                 <option value=''>Please Select</option>
                 {this.props.todoItems.map(item => {
