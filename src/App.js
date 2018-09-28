@@ -57,7 +57,7 @@ class AppComponent extends Component {
               rel="noopener noreferrer"
               target="_blank"
             >
-              create new GitHub issue
+              Create new GitHub issue
             </a>
           </div>
         </nav>
