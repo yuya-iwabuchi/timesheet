@@ -35,8 +35,13 @@ class AppComponent extends Component {
     return (
       <div>
         <nav className="navbar navbar-light bg-quaternary">
-          <span className="navbar-brand mb-0 h1 text-light">Timesheet</span>
-          <div className="div-inline">
+          <span className="navbar-brand mb-0">
+            <span className="h4 text-light">Timesheet</span>
+            <small className="text-light pl-2">
+              v1.0
+            </small>
+          </span>
+          <div className="div-inline d-flex justify-content-center align-items-center">
             <a
               className="btn btn-outline-light"
               href="http://freesuggestionbox.com/pub/eagzrkh"
