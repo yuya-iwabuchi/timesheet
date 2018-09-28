@@ -43,12 +43,21 @@ class AppComponent extends Component {
           </span>
           <div className="div-inline d-flex justify-content-center align-items-center">
             <a
-              className="btn btn-outline-light"
+              className="btn btn-sm btn-outline-light"
               href="http://freesuggestionbox.com/pub/eagzrkh"
               rel="noopener noreferrer"
               target="_blank"
             >
-              Leave a suggestion!
+              Leave a suggestion
+            </a>
+            <span className="text-light px-2">or</span>
+            <a
+              className="btn btn-sm btn-outline-light"
+              href="https://github.com/Sunakujira1/timesheet/issues/new"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              create new GitHub issue
             </a>
           </div>
         </nav>
