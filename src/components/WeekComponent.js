@@ -47,6 +47,7 @@ class WeekComponent extends Component {
     this.onNextWeekClick = this.onNextWeekClick.bind(this);
     this.onResetWeek = this.onResetWeek.bind(this);
     this.onResetHours = this.onResetHours.bind(this);
+    this.onResetSubmitStatuses = this.onResetSubmitStatuses.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.populateWeek = this.populateWeek.bind(this);
   }
@@ -60,43 +61,43 @@ class WeekComponent extends Component {
   }
 
   onTodoItemChange(event) {
+    this.onResetSubmitStatuses();
     let selectedTodoItem = this.props.todoItems.find(todoItem => todoItem.id.toString() === event.target.value);
     if (selectedTodoItem === undefined) selectedTodoItem = null;
     this.setState( { selectedTodoItem });
   }
 
   onHoursEnter(event, index) {
+    this.onResetSubmitStatuses();
     const newHours = +event.target.value;
-    this.setState({ 
+    this.setState({
       hours: this.state.hours.map((hour, i) => i === index ? newHours: hour),
     })
 
   }
 
   onPrevWeekClick() {
+    this.onResetSubmitStatuses();
     this.populateWeek(this.state.startOfWeek.subtract(7, 'days'));
   }
   onNextWeekClick() {
+    this.onResetSubmitStatuses();
     this.populateWeek(this.state.startOfWeek.add(7, 'days'));
   }
 
   onResetWeek() {
+    this.onResetSubmitStatuses();
     const today = dayjs().startOf('week');
     this.populateWeek(today);
   }
 
   onResetHours() {
-    this.setState({
-      hours: [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-      ],
-    });
+    this.onResetSubmitStatuses();
+    this.setState({ hours: [ '', '', '', '', '', '', '' ] });
+  }
+
+  onResetSubmitStatuses() {
+    this.setState({ submitStatuses: [ '', '', '', '', '', '', ''] });
   }
 
   onSubmit(event) {
@@ -218,7 +219,7 @@ class WeekComponent extends Component {
           <div className="mt-4 mb-5 p-4 border">
             <section className="day">
               <div className="week-button d-flex align-items-center justify-content-center">
-                <button className="btn btn-outline-secondary" onClick={this.onPrevWeekClick}>
+                <button type="button" className="btn btn-outline-secondary" onClick={this.onPrevWeekClick}>
                   <span className="fas fa-chevron-left">
                   </span>
                 </button>
@@ -253,16 +254,16 @@ class WeekComponent extends Component {
                 ];
               })}
               <div className="week-button d-flex align-items-center justify-content-center">
-                <button className="btn btn-outline-secondary" onClick={this.onNextWeekClick}>
+                <button type="button" className="btn btn-outline-secondary" onClick={this.onNextWeekClick}>
                   <span className="fas fa-chevron-right">
                   </span>
                 </button>
               </div>
               <div className="reset-buttons pb-2">
-                <button className="btn btn-secondary mr-2" onClick={this.onResetWeek}>
+                <button type="button" className="btn btn-secondary mr-2" onClick={this.onResetWeek}>
                   Reset Week
                 </button>
-                <button className="btn btn-secondary ml-2" onClick={this.onResetHours}>
+                <button type="button" className="btn btn-secondary ml-2" onClick={this.onResetHours}>
                   Reset Hours
                 </button>
               </div>
