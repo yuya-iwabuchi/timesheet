@@ -222,7 +222,7 @@ class WeekComponent extends Component {
           </div>
           <div className="mt-4 mb-5 p-4 border">
             <section className="day">
-              <div className="week-button d-flex align-items-center justify-content-center">
+              <div className="week-button prev-button d-flex align-items-center justify-content-center">
                 <button type="button" className="btn btn-outline-secondary" onClick={this.onPrevWeekClick}>
                   <span className="fas fa-chevron-left">
                   </span>
@@ -245,7 +245,7 @@ class WeekComponent extends Component {
                   <span key={`${day.day()}-date-label`} className="day-date-label pb-3">
                     {day.format('MMM-DD')}
                   </span>,
-                  <div key={`${day.day()}-input`} className="day-input pb-4">
+                  <div key={`${day.day()}-input`} className={`day-input pb-4 day-input-${index}`}>
                     <input
                       type="number"
                       className="form-control text-right"
@@ -257,7 +257,7 @@ class WeekComponent extends Component {
                   </div>,
                 ];
               })}
-              <div className="week-button d-flex align-items-center justify-content-center">
+              <div className="week-button next-button d-flex align-items-center justify-content-center">
                 <button type="button" className="btn btn-outline-secondary" onClick={this.onNextWeekClick}>
                   <span className="fas fa-chevron-right">
                   </span>

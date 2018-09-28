@@ -1,43 +1,101 @@
+@import "../assets/vendors/bootstrap/scss/functions";
+@import "../assets/vendors/bootstrap/scss/variables";
+@import "../assets/vendors/bootstrap/scss/mixins";
 
 .day {
   display: grid;
-  grid-template-columns: 0.5fr repeat(7, 1fr) 0.5fr;
-  grid-template-rows: 30px repeat(4, auto);
-  grid-column-gap: 20px;
-  justify-items: center;
 
-  
-
-  .submit-status {
-    grid-row: 1 / 2;
+  .week-button button {
+    height: 38px;
+    width: 38px;
+    border-radius: 50%;
   }
 
-  .day-day-label {
-    grid-row: 2 / 3;
-  }
+  @include media-breakpoint-up(md) {
+    grid-template-columns: 0.5fr repeat(7, 1fr) 0.5fr;
+    grid-template-rows: 30px repeat(4, auto);
+    grid-column-gap: 20px;
+    justify-items: center;
 
-  .day-date-label {
-    grid-row: 3 / 4;
-  }
+    .submit-status {
+      grid-row: 1 / 2;
+    }
 
-  .day-input {
-    grid-row: 4 / 5;
-  }
+    .day-day-label {
+      grid-row: 2 / 3;
+    }
 
-  .week-button {
-    grid-row: 1 / 5;
+    .day-date-label {
+      grid-row: 3 / 4;
+    }
 
-    button {
-      height: 38px;
-      width: 38px;
-      border-radius: 50%;
+    .day-input {
+      grid-row: 4 / 5;
+    }
+
+    .week-button {
+      grid-row: 1 / 5;
+    }
+
+    .reset-buttons {
+      grid-row: 5 / 6;
+      grid-column: 2 / 9;
+      place-self: center end;
     }
   }
 
-  .reset-buttons {
-    grid-row: 5 / 6;
-    grid-column: 2 / 9;
-    place-self: center end;
+  @include media-breakpoint-only(md) {
+    grid-column-gap: 10px;
+
+    .day-day-label,
+    .day-date-label {
+      font-size: 80%;
+    }
+  }
+
+
+
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: 0.2fr 1fr 1fr 0.2fr;
+    grid-template-rows: auto auto repeat(14, auto) auto;
+    grid-column-gap: 20px;
+    justify-items: center;
+
+    .submit-status {
+      grid-column: 2 / 3;
+    }
+
+    .day-day-label,
+    .day-date-label {
+      grid-column: 2 / 3;
+    }
+
+    .day-input {
+      grid-column: 3 / 4;
+      grid-row-end: span 2;
+      // place-self: center;
+
+      // &-0 { grid-row-start: 3; }
+      // &-1 { grid-row-start: 4; }
+    }
+
+    .week-button {
+      grid-row: 1 / 3;
+      grid-column-start: 1;
+      grid-column-end: span 2;
+
+      &.next-button {
+      grid-row: 1 / 2;
+      grid-column-start: 3;
+      grid-column-end: span 2;
+      }
+    }
+
+    .reset-buttons {
+      display: none;
+      grid-row: 13 / 14;
+      place-self: center end;
+    }
   }
 
 }
