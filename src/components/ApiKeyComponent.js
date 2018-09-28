@@ -3,6 +3,8 @@ import React, { Component} from 'react';
 import './ApiKeyComponent.scss';
 import { SpinnerComponent } from './SpinnerComponent';
 
+const DOMAIN = 'https://blanclink.teamwork.com';
+
 class AppComponent extends Component {
   constructor() {
     super();
@@ -14,6 +16,7 @@ class AppComponent extends Component {
         status: null,
         text: '',
       },
+      account: null,
     };
 
     this.getLocalStorage = this.getLocalStorage.bind(this);
@@ -57,7 +60,7 @@ class AppComponent extends Component {
     }
   }
 
-  testAPIKey(event) {
+  async testAPIKey(event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -68,17 +71,17 @@ class AppComponent extends Component {
         text: 'Retrieving tasks...',
       },
     });
-    const url = 'https://blanclink.teamwork.com/tasks.json';
+    const tasksUrl = `${DOMAIN}/tasks.json`;
     const headers = { "Authorization": "BASIC " + window.btoa(this.state.apiKey + ":xxx") };
 
-    fetch(url, { headers })
+    const succeeded = await fetch(tasksUrl, { headers })
       .then(res => res.json())
       .then(res => {
         if (res.status === 'OK' || res.STATUS === 'OK') {
           this.setState({
             testingOutput: {
-              status: 'success',
-              text: 'Complete!',
+              status: 'inProgress',
+              text: 'Retrieved tasks...',
             },
           });
           const todoItems = res['todo-items'].sort((a, b) => {
@@ -87,6 +90,7 @@ class AppComponent extends Component {
             return 0;
           });
           this.props.setTodoItems(todoItems);
+          return true;
         } else {
           throw Error(res.error);
         }
@@ -98,10 +102,39 @@ class AppComponent extends Component {
             text: err.message,
           },
         })
-      })
-      .finally(() => {
-        this.setState({ testing: false });
       });
+
+      if (succeeded) {
+        const accountUrl = `${DOMAIN}/me.json`;
+        fetch(accountUrl, { headers })
+          .then(res => res.json())
+          .then(res => {
+            if (res.status === 'OK' || res.STATUS === 'OK') {
+              this.setState({
+                account: res.person,
+              });
+              this.setState({
+                testingOutput: {
+                  status: 'success',
+                  text: `Connected! Hello ${res.person['first-name']}!`,
+                },
+              });
+              this.props.setAccount(res.person);
+              this.props.setApiKey(this.state.apiKey);
+            } else {
+              throw Error(res.error);
+            }
+          })
+          .catch((err) => {
+            this.setState({
+              testingOutput: {
+                status: 'failure',
+                text: err.message,
+              },
+            })
+          });
+      }
+      this.setState({ testing: false });  
   }
 
   renderStatusIcon(status) {
@@ -133,7 +166,10 @@ class AppComponent extends Component {
               value={this.state.apiKey}
               onChange={this.onAPIKeyChange}
             />
-            <small id="api-key-help" className="form-text text-muted">You can find from your Teamwork Project user account profile.</small>
+            <small id="api-key-help" className="form-text text-muted">
+              You can find the API key at your Teamwork Project user account profile.
+              For more details, check <a rel="noopener noreferrer" target="_blank" href="https://developer.teamwork.com/projects/finding-your-url-and-api-key/api-key-and-url">the second section of this link.</a>
+            </small>
           </div>
         </div>
         <div className="form-check form-group offset-md-2">

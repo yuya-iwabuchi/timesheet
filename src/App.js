@@ -9,14 +9,26 @@ class AppComponent extends Component {
     super();
 
     this.state = {
+      apiKey: null,
       todoItems: null,
+      account: null,
     }
 
+    this.setApiKey = this.setApiKey.bind(this);
     this.setTodoItems = this.setTodoItems.bind(this);
+    this.setAccount = this.setAccount.bind(this);
+  }
+
+  setApiKey(apiKey) {
+    this.setState({ apiKey });
   }
 
   setTodoItems(todoItems) {
     this.setState({ todoItems });
+  }
+
+  setAccount(account) {
+    this.setState({ account });
   }
 
   render() {
@@ -26,13 +38,13 @@ class AppComponent extends Component {
           <span className="navbar-brand mb-0 h1 text-light">Timesheet</span>
         </nav>
         <main className="container border mt-5">
-          <ApiKeyComponent setTodoItems={this.setTodoItems} />
+          <ApiKeyComponent setApiKey={this.setApiKey} setTodoItems={this.setTodoItems} setAccount={this.setAccount} />
         </main>
         {
-          this.state.todoItems !== null
+          this.state.todoItems !== null && this.state.account !== null
           ? (
-            <section className="container border mt-5">
-              <WeekComponent todoItems={this.state.todoItems} />
+            <section className="container border my-5">
+                <WeekComponent apiKey={this.state.apiKey} todoItems={this.state.todoItems} account={this.state.account} />
             </section>
           ) : null
         }
