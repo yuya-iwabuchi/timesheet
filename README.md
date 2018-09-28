@@ -11,12 +11,5 @@ This is a simple React app, too lazy to integrate Redux thus it's working by hac
 GitHub Pages with serving `/docs` is used to host the web app.
 
 
-Feel free to create issues for bug reports or suggests.
+Feel free to create issues for bug reports or suggests.  
 Also feel free to create PR, but the code is currently written with no scalability and no maintainability in mind, so be wary.
-
-Todo
-- [x] Basic timesheet entering for the current week for one task
-- [x] Ability to change week
-- [ ] Responsive
-- [ ] Configure billability of specific time
-- [ ] Multiple tasks
