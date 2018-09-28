@@ -39,7 +39,7 @@ class AppComponent extends Component {
           <div className="div-inline">
             <a
               className="btn btn-outline-light"
-              href="http://freesuggestionbox.com/pub/wltpkcg"
+              href="http://freesuggestionbox.com/pub/eagzrkh"
               rel="noopener noreferrer"
               target="_blank"
             >
