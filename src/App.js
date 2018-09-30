@@ -35,24 +35,24 @@ class AppComponent extends Component {
     return (
       <div>
         <nav className="navbar navbar-light bg-quaternary">
-          <span className="navbar-brand mb-0">
-            <span className="h4 text-light">Timesheet</span>
+          <span className="navbar-brand mb-0 d-flex flex-column flex-sm-row justify-content-center align-items-start align-items-sm-end">
+            <span className="h4 text-light mb-0">Timesheet</span>
             <small className="text-light pl-2">
               v1.0
             </small>
           </span>
-          <div className="div-inline d-flex justify-content-center align-items-center">
+          <div className="div-inline d-flex flex-column flex-md-row justify-content-center align-items-end align-items-md-center">
             <a
-              className="btn btn-sm btn-outline-light"
+              className="btn btn-sm btn-outline-light my-1"
               href="http://freesuggestionbox.com/pub/eagzrkh"
               rel="noopener noreferrer"
               target="_blank"
             >
               Leave a suggestion
             </a>
-            <span className="text-light px-2">or</span>
+            <span className="text-light px-2 d-none d-md-block">or</span>
             <a
-              className="btn btn-sm btn-outline-light"
+              className="btn btn-sm btn-outline-light my-1"
               href="https://github.com/Sunakujira1/timesheet/issues/new"
               rel="noopener noreferrer"
               target="_blank"

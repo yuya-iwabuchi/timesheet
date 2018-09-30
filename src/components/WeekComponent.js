@@ -9,36 +9,20 @@ const DOMAIN = 'https://blanclink.teamwork.com';
 class WeekComponent extends Component {
   constructor() {
     super();
-    const today = dayjs().startOf('week'); // Sunday
+    const startOfWeek = dayjs().startOf('week'); // Sunday
     this.state = {
-      startOfWeek: today,
+      startOfWeek,
       days: [
-        today.add(1, 'day'), // Monday
-        today.add(2, 'day'),
-        today.add(3, 'day'),
-        today.add(4, 'day'),
-        today.add(5, 'day'),
-        today.add(6, 'day'),
-        today.add(7, 'day'), // Sunday
+        startOfWeek.add(1, 'day'), // Monday
+        startOfWeek.add(2, 'day'),
+        startOfWeek.add(3, 'day'),
+        startOfWeek.add(4, 'day'),
+        startOfWeek.add(5, 'day'),
+        startOfWeek.add(6, 'day'),
+        startOfWeek.add(7, 'day'), // Sunday
       ],
-      hours: [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-      ],
-      submitStatuses: [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-      ],
+      hours: [ '', '', '', '', '', '', '' ],
+      submitStatuses: [ '', '', '', '', '', '', '' ],
       selectedTodoItem: null,
       submitting: false,
     }
@@ -188,8 +172,24 @@ class WeekComponent extends Component {
     }
   }
 
+  getDaySuffix(day) {
+    switch (day) {
+      case 1:
+      case 21:
+      case 31:
+        return "st";
+      case 2:
+      case 22:
+        return "nd";
+      case 3:
+      case 23:
+        return "rd";
+      default:
+        return "th";
+    }
+  }
+
   render() {
-    console.log('state', this.state);
     return (
       <section className="mt-3 mb-5 mx-1 mx-sm-2 mx-lg-5" ref={ref => this.mainElement = ref}>
         <h5 className="mb-2 font-weight-bold">Step 2: Submit Timesheet</h5>
@@ -206,7 +206,7 @@ class WeekComponent extends Component {
         <form onSubmit={this.onSubmit}>
           <div className="form-group row">
             <label htmlFor="taskInput" className="col-md-2 col-form-label">Task</label>
-            <div className="col-md-10 col-lg-auto">
+            <div className="col-12 col-md-8 col-lg-auto">
               <select id="taskInput" className="form-control" onChange={this.onTodoItemChange} aria-describedby="task-select-help">
                 <option value=''>Please Select</option>
                 {this.props.todoItems.map(item => {
@@ -222,15 +222,9 @@ class WeekComponent extends Component {
           </div>
           <div className="mt-4 mb-5 p-4 border">
             <section className="day">
-              <div className="week-button d-flex align-items-center justify-content-center">
-                <button type="button" className="btn btn-outline-secondary" onClick={this.onPrevWeekClick}>
-                  <span className="fas fa-chevron-left">
-                  </span>
-                </button>
-              </div>
               {this.state.submitStatuses.map((submitStatuses, index) => {
                 return (
-                  <div key={`status-${index}`} className="submit-status d-flex align-items-center justify-content-center">
+                  <div key={`status-${index}`} className={`submit-status d-flex align-items-center justify-content-center status-${index}`}>
                     <span className={this.statusToClass(submitStatuses)}>
                     </span>
                   </div>
@@ -239,13 +233,16 @@ class WeekComponent extends Component {
               })}
               {this.state.days.map((day, index) => {
                 return [
-                  <span key={`${day.day()}-day-label`} className="day-day-label">
-                    {day.format('dddd')}
+                  <span key={`day-label-${index}`} className={`day-label day-label-${index}`}>
+                    <span className="d-none d-md-block">{day.format('dddd')}</span>
+                    <span className="d-block d-md-none">{day.format('dddd')},</span>
                   </span>,
-                  <span key={`${day.day()}-date-label`} className="day-date-label pb-3">
-                    {day.format('MMM-DD')}
+                  <span key={`date-label-${index}`} className={`date-label pb-md-3 date-label-${index}`}>
+                    <span className="d-none d-md-block">{day.format('MMM-DD')}</span>
+                    <span className="d-block d-md-none">{`${day.format('MMMM D')}${this.getDaySuffix(day.day())}`}</span>
+                    
                   </span>,
-                  <div key={`${day.day()}-input`} className="day-input pb-4">
+                  <div key={`hours-input-${index}`} className={`hours-input pb-md-4 hours-input-${index}`}>
                     <input
                       type="number"
                       className="form-control text-right"
@@ -257,17 +254,23 @@ class WeekComponent extends Component {
                   </div>,
                 ];
               })}
-              <div className="week-button d-flex align-items-center justify-content-center">
+              <div className="week-button prev-button d-flex align-items-center justify-content-center mb-3 mb-md-0">
+                <button type="button" className="btn btn-outline-secondary" onClick={this.onPrevWeekClick}>
+                  <span className="fas fa-chevron-left">
+                  </span>
+                </button>
+              </div>
+              <div className="week-button next-button d-flex align-items-center justify-content-center mb-3 mb-md-0">
                 <button type="button" className="btn btn-outline-secondary" onClick={this.onNextWeekClick}>
                   <span className="fas fa-chevron-right">
                   </span>
                 </button>
               </div>
-              <div className="reset-buttons pb-2">
-                <button type="button" className="btn btn-secondary mr-2" onClick={this.onResetWeek}>
+              <div className="reset-buttons mt-3 mt-md-0">
+                <button type="button" className="btn btn-secondary" onClick={this.onResetWeek}>
                   Reset Week
                 </button>
-                <button type="button" className="btn btn-secondary ml-2" onClick={this.onResetHours}>
+                <button type="button" className="btn btn-secondary" onClick={this.onResetHours}>
                   Reset Hours
                 </button>
               </div>
@@ -281,8 +284,8 @@ class WeekComponent extends Component {
             >
               {
                 this.state.submitting
-                  ? <SpinnerComponent />
-                  : <span>Submit</span>
+                ? <SpinnerComponent />
+                : <span>Submit</span>
               }
             </button>
           </div>
