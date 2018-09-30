@@ -24,6 +24,10 @@ class WeekComponent extends Component {
       hours: [ '', '', '', '', '', '', '' ],
       submitStatuses: [ '', '', '', '', '', '', '' ],
       selectedTodoItem: null,
+      isBillable: true,
+      startHour: 9,
+      startMinute: 30,
+      selectedPeriod: 'am',
       submitting: false,
     }
 
@@ -36,6 +40,10 @@ class WeekComponent extends Component {
     this.onResetSubmitStatuses = this.onResetSubmitStatuses.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.populateWeek = this.populateWeek.bind(this);
+    this.onIsBillableChange = this.onIsBillableChange.bind(this);
+    this.onStartHourEnter = this.onStartHourEnter.bind(this);
+    this.onStartMinuteEnter = this.onStartMinuteEnter.bind(this);
+    this.onPeriodClick = this.onPeriodClick.bind(this);
   }
 
   componentDidMount() {
@@ -59,7 +67,29 @@ class WeekComponent extends Component {
     this.setState({
       hours: this.state.hours.map((hour, i) => i === index ? newHours: hour),
     })
+  }
 
+  onIsBillableChange(event) {
+    const isBillable = event.target.checked;
+    this.setState({ isBillable });
+  }
+
+  onStartHourEnter(event) {
+    let startHour = +event.target.value;
+    if (startHour === 13) startHour = 1;
+    else if (startHour === 0) startHour = 12;
+    this.setState({ startHour });
+  }
+  onStartMinuteEnter(event) {
+    let startMinute = +event.target.value;
+    if (startMinute === 60) startMinute = 0;
+    else if (startMinute === -5) startMinute = 55;
+    this.setState({ startMinute });
+
+  }
+  onPeriodClick(event) {
+    const selectedPeriod = event.target.value;
+    this.setState({ selectedPeriod });
   }
 
   onPrevWeekClick() {
@@ -96,7 +126,14 @@ class WeekComponent extends Component {
       date: day,
       hours: this.state.hours[index],
     }));
-    
+
+    const startTime = dayjs()
+      .set('hour', this.state.startHour + (this.state.selectedPeriod === 'pm' ? 12 : 0))
+      .set('minute', this.state.startMinute)
+      .format('HH:mm');
+
+    const isbillable = this.state.isBillable ? '1' : '0';
+
     const createUrl = todoId => `${DOMAIN}/tasks/${todoId}/time_entries.json`;
     week
       .forEach((day, index) => {
@@ -111,10 +148,10 @@ class WeekComponent extends Component {
           body: JSON.stringify({
             'time-entry': {
               date: day.date.format('YYYYMMDD'),
-              time: '09:30',
+              time: startTime,
               hours: Math.floor(day.hours),
               minutes: Math.floor((day.hours % 1) * 60),
-              isbillable: '1',
+              isbillable,
             },
           })
         })
@@ -195,12 +232,7 @@ class WeekComponent extends Component {
         <h5 className="mb-2 font-weight-bold">Step 2: Submit Timesheet</h5>
         <div className="row">
           <small id="task-select-help" className="form-text text-muted mb-4 col-12 col-md-8">
-            Note - Currently many things are set by default:
-            <ul>
-              <li>Billable by default</li>
-              <li>9:30AM start time</li>
-              <li>Enter hours only by whole number</li>
-            </ul>
+            Note - Currently you can only submit by hours in whole number.
           </small>
         </div>
         <form onSubmit={this.onSubmit}>
@@ -221,6 +253,59 @@ class WeekComponent extends Component {
             </div>
           </div>
           <div className="mt-4 mb-5 p-4 border">
+            <div className="d-flex justify-content-center justify-content-md-end align-items-center mb-4">
+              <div className="col-12 d-flex flex-wrap align-items-center justify-content-end">
+                <div className="w-100 d-flex justify-content-end">
+                  <div className="custom-control custom-checkbox billable">
+                    <input
+                      type="checkbox"
+                      className="custom-control-input"
+                      id="is-billable"
+                      checked={this.state.isBillable}
+                      onChange={this.onIsBillableChange}
+                    />
+                    <label className="custom-control-label" htmlFor="is-billable">Billable</label>
+                  </div>
+                </div>
+                <div className="d-flex flex-wrap justify-content-center align-items-center">
+                  <label className="col-12 col-md-auto text-center mb-0">Start time</label>
+                  <div className="d-flex align-items-center">
+                    <div className="start-time col-auto">
+                      <input
+                        type="number"
+                        min="0"
+                        max="13"
+                        className="form-control text-center"
+                        placeholder="hh"
+                        value={this.state.startHour}
+                        onChange={this.onStartHourEnter}
+                      />
+                    </div>
+                    <span className="font-weight-bold">:</span>
+                    <div className="start-time col-auto">
+                      <input
+                        type="number"
+                        min="-5"
+                        max="60"
+                        step="5"
+                        className="form-control text-center"
+                        placeholder="mm"
+                        value={this.state.startMinute}
+                        onChange={this.onStartMinuteEnter}
+                      />
+                    </div>
+                  </div>
+                  <div className="btn-group btn-group-toggle my-2" data-toggle="buttons">
+                    <label className={`btn btn-sm btn-secondary ${this.state.selectedPeriod === 'am' ? 'active' : ''}`}>
+                      <input type="radio" value="am" onClick={this.onPeriodClick}/> AM
+                    </label>
+                    <label className={`btn btn-sm btn-secondary ${this.state.selectedPeriod === 'pm' ? 'active' : ''}`}>
+                      <input type="radio" value="pm" onClick={this.onPeriodClick}/> PM
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
             <section className="day">
               {this.state.submitStatuses.map((submitStatuses, index) => {
                 return (
@@ -228,7 +313,6 @@ class WeekComponent extends Component {
                     <span className={this.statusToClass(submitStatuses)}>
                     </span>
                   </div>
-
                 )
               })}
               {this.state.days.map((day, index) => {

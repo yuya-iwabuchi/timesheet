@@ -9,4 +9,6 @@ $theme-colors: (
   "danger": $danger
 );
 
+$custom-control-indicator-checked-bg: $secondary;
+
 @import '../vendors/bootstrap/scss/bootstrap.scss';
