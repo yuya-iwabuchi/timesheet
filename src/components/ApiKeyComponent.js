@@ -156,7 +156,7 @@ class AppComponent extends Component {
         <h5 className="mb-4 font-weight-bold">Step 1: Setup API Key</h5>
         <div className="form-group row">
           <label htmlFor="api-key" className="col-md-2 col-form-label">API Key</label>
-          <div className="col-md-10 col-lg-6">
+          <div className="col-12 col-md-8 col-lg-6">
             <input
               type="text"
               className="form-control"

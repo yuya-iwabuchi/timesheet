@@ -67,9 +67,10 @@
 
 
   @include media-breakpoint-only(sm) {
-    grid-template-columns: 0.2fr 1fr auto 1fr 0.2fr;
+    grid-template-columns: 20px 1fr auto 1fr 20px;
     grid-template-rows: auto repeat(7, auto) auto;
     grid-column-gap: 10px;
+    grid-row-gap: 10px;
     justify-items: center;
     align-items: center;
 
@@ -85,46 +86,74 @@
       "reset-buttons reset-buttons reset-buttons reset-buttons reset-buttons"
     ;
 
+    .day-label {
+      justify-self: end;
+      margin: 5px 0;
+    }
+    .date-label {
+      justify-self: start;
+      margin: 5px 0;
+    }
+
     .hours-input {
       width: auto;
-      margin-bottom: 10px;
+      place-self: center;
     }
 
     .reset-buttons {
+      margin-left: 30px;
+      margin-right: 30px;
       place-self: stretch;
     }
   }
 
     @include media-breakpoint-only(xs) {
-    grid-template-columns: 0.2fr 1fr 1fr 0.2fr;
+    grid-template-columns: 20px 1fr 1fr 20px;
     grid-template-rows: auto auto repeat(14, auto) auto;
     grid-column-gap: 10px;
     justify-items: center;
 
     grid-template-areas: 
-      ". prev-button   next-button   ."
-      ". day-label-0   hours-input-0 status-0"
-      ". date-label-0  hours-input-0 status-0"
-      ". day-label-1   hours-input-1 status-1"
-      ". date-label-1  hours-input-1 status-1"
-      ". day-label-2   hours-input-2 status-2"
-      ". date-label-2  hours-input-2 status-2"
-      ". day-label-3   hours-input-3 status-3"
-      ". date-label-3  hours-input-3 status-3"
-      ". day-label-4   hours-input-4 status-4"
-      ". date-label-4  hours-input-4 status-4"
-      ". day-label-5   hours-input-5 status-5"
-      ". date-label-5  hours-input-5 status-5"
-      ". day-label-6   hours-input-6 status-6"
-      ". date-label-6  hours-input-6 status-6"
+      "............. prev-button   next-button   ........     "
+      ".............  day-label-0  hours-input-0 status-0     "
+      "............. date-label-0  hours-input-0 status-0     "
+      ".............  day-label-1  hours-input-1 status-1     "
+      "............. date-label-1  hours-input-1 status-1     "
+      ".............  day-label-2  hours-input-2 status-2     "
+      "............. date-label-2  hours-input-2 status-2     "
+      ".............  day-label-3  hours-input-3 status-3     "
+      "............. date-label-3  hours-input-3 status-3     "
+      ".............  day-label-4  hours-input-4 status-4     "
+      "............. date-label-4  hours-input-4 status-4     "
+      ".............  day-label-5  hours-input-5 status-5     "
+      "............. date-label-5  hours-input-5 status-5     "
+      ".............  day-label-6  hours-input-6 status-6     "
+      "............. date-label-6  hours-input-6 status-6     "
       "reset-buttons reset-buttons reset-buttons reset-buttons"
     ;
 
+    .day-label {
+      align-self: end;
+      margin-top: 5px;
+    }
+    .date-label {
+      align-self: start;
+      margin-bottom: 5px;
+
+      > span {
+        text-align: center;
+      }
+    }
+
     .hours-input {
       width: auto;
+      place-self: center;
+      margin: 10px 0;
     }
 
     .reset-buttons {
+      margin-left: 30px;
+      margin-right: 30px;
       place-self: stretch;
     }
   }

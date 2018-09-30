@@ -21,24 +21,8 @@ class WeekComponent extends Component {
         startOfWeek.add(6, 'day'),
         startOfWeek.add(7, 'day'), // Sunday
       ],
-      hours: [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-      ],
-      submitStatuses: [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-      ],
+      hours: [ '', '', '', '', '', '', '' ],
+      submitStatuses: [ '', '', '', '', '', '', '' ],
       selectedTodoItem: null,
       submitting: false,
     }
@@ -188,8 +172,24 @@ class WeekComponent extends Component {
     }
   }
 
+  getDaySuffix(day) {
+    switch (day) {
+      case 1:
+      case 21:
+      case 31:
+        return "st";
+      case 2:
+      case 22:
+        return "nd";
+      case 3:
+      case 23:
+        return "rd";
+      default:
+        return "th";
+    }
+  }
+
   render() {
-    console.log('state', this.state);
     return (
       <section className="mt-3 mb-5 mx-1 mx-sm-2 mx-lg-5" ref={ref => this.mainElement = ref}>
         <h5 className="mb-2 font-weight-bold">Step 2: Submit Timesheet</h5>
@@ -206,7 +206,7 @@ class WeekComponent extends Component {
         <form onSubmit={this.onSubmit}>
           <div className="form-group row">
             <label htmlFor="taskInput" className="col-md-2 col-form-label">Task</label>
-            <div className="col-md-10 col-lg-auto">
+            <div className="col-12 col-md-8 col-lg-auto">
               <select id="taskInput" className="form-control" onChange={this.onTodoItemChange} aria-describedby="task-select-help">
                 <option value=''>Please Select</option>
                 {this.props.todoItems.map(item => {
@@ -234,10 +234,13 @@ class WeekComponent extends Component {
               {this.state.days.map((day, index) => {
                 return [
                   <span key={`day-label-${index}`} className={`day-label day-label-${index}`}>
-                    {day.format('dddd')}
+                    <span className="d-none d-md-block">{day.format('dddd')}</span>
+                    <span className="d-block d-md-none">{day.format('dddd')},</span>
                   </span>,
                   <span key={`date-label-${index}`} className={`date-label pb-md-3 date-label-${index}`}>
-                    {day.format('MMM-DD')}
+                    <span className="d-none d-md-block">{day.format('MMM-DD')}</span>
+                    <span className="d-block d-md-none">{`${day.format('MMMM D')}${this.getDaySuffix(day.day())}`}</span>
+                    
                   </span>,
                   <div key={`hours-input-${index}`} className={`hours-input pb-md-4 hours-input-${index}`}>
                     <input
@@ -281,8 +284,8 @@ class WeekComponent extends Component {
             >
               {
                 this.state.submitting
-                  ? <SpinnerComponent />
-                  : <span>Submit</span>
+                ? <SpinnerComponent />
+                : <span>Submit</span>
               }
             </button>
           </div>
