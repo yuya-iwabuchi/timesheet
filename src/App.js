@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.scss';
 
+import InfoComponent from './components/InfoComponent';
 import ApiKeyComponent from './components/ApiKeyComponent';
 import WeekComponent from './components/WeekComponent';
 
@@ -61,14 +62,17 @@ class AppComponent extends Component {
             </a>
           </div>
         </nav>
-        <main className="py-5">
-          <section className="container border">
+        <main className="py-5 px-1 px-sm-0">
+          <section className="container card mb-5">
+            <InfoComponent />
+          </section>
+          <section className="container card mb-5">
             <ApiKeyComponent setApiKey={this.setApiKey} setTodoItems={this.setTodoItems} setAccount={this.setAccount} />
           </section>
           {
             this.state.todoItems !== null && this.state.account !== null
             ? (
-              <section className="container border my-5">
+                <section className="container card mb-5">
                   <WeekComponent apiKey={this.state.apiKey} todoItems={this.state.todoItems} account={this.state.account} />
               </section>
             ) : null
