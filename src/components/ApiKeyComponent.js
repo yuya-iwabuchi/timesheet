@@ -157,8 +157,11 @@ class AppComponent extends Component {
         <div className="form-group row">
           <label htmlFor="api-key" className="col-md-2 col-form-label">API Key</label>
           <div className="col-12 col-md-8 col-lg-6">
+            <input className="d-none" type="text" name="app-name" autoComplete="username" value="Timesheet App" readOnly />
             <input
-              type="text"
+              type="password"
+              name="api-key"
+              autoComplete="password"
               className="form-control"
               id="api-key"
               aria-describedby="api-key-help"
