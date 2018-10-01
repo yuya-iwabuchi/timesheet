@@ -175,15 +175,20 @@ class AppComponent extends Component {
             </small>
           </div>
         </div>
-        <div className="form-check form-group offset-md-2">
+        <div className="custom-control custom-checkbox form-group offset-md-2">
           <input
             type="checkbox"
-            className="form-check-input"
+            className="custom-control-input"
             id="remember-me"
             checked={this.state.rememberMe}
             onChange={this.onRememberMeChange}
           />
-          <label className="form-check-label" htmlFor="remember-me">Remember me (Locally)</label>
+          <label className="custom-control-label" htmlFor="remember-me">
+            Remember me (Locally)
+          </label>
+          <small className="form-text text-muted">
+            Do not check this box if you are not on secure device.
+          </small>
         </div>
         <div className="form-group d-flex flex-wrap offset-md-2">
           <button

@@ -230,13 +230,13 @@ class WeekComponent extends Component {
     return (
       <section className="mt-3 mb-5 mx-1 mx-sm-2 mx-lg-5" ref={ref => this.mainElement = ref}>
         <h5 className="mb-2 font-weight-bold">Step 2: Submit Timesheet</h5>
-        <div className="row">
-          <small id="task-select-help" className="form-text text-muted mb-4 col-12 col-md-8">
-            Note - Currently you can only submit by hours in whole number.
+        <div className="row mb-4">
+          <small id="task-select-help" className="form-text text-muted col-12 col-md-8">
+            Note - Currently you can only submit one task at a time and the hours are in whole number.
           </small>
         </div>
         <form onSubmit={this.onSubmit}>
-          <div className="form-group row">
+          <div className="form-group row mb-5">
             <label htmlFor="taskInput" className="col-md-2 col-form-label">Task</label>
             <div className="col-12 col-md-8 col-lg-auto">
               <select id="taskInput" className="form-control" onChange={this.onTodoItemChange} aria-describedby="task-select-help">
@@ -247,16 +247,13 @@ class WeekComponent extends Component {
                   );
                 })}
               </select>
-              <small id="task-select-help" className="form-text text-muted">
-                Pick a task you'd like to fill. Currently you may fill only one task at a time.
-              </small>
             </div>
           </div>
-          <div className="mt-4 mb-5 p-4 border">
+          <div className="mb-5 p-4 border">
             <div className="d-flex justify-content-center justify-content-md-end align-items-center mb-4">
               <div className="col-12 d-flex flex-wrap align-items-center justify-content-end">
                 <div className="w-100 d-flex justify-content-end">
-                  <div className="custom-control custom-checkbox billable">
+                  <div className="custom-control custom-checkbox custom-checkbox-secondary">
                     <input
                       type="checkbox"
                       className="custom-control-input"

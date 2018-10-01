@@ -9,6 +9,16 @@ $theme-colors: (
   "danger": $danger
 );
 
-$custom-control-indicator-checked-bg: $secondary;
-
 @import '../vendors/bootstrap/scss/bootstrap.scss';
+
+.custom-checkbox {
+  label:hover {
+    cursor: pointer;
+  }
+
+  &-secondary {
+    .custom-control-input:checked ~ .custom-control-label::before {
+      background-color: $secondary;
+    }
+  }
+}
