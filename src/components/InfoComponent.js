@@ -5,11 +5,11 @@ class InfoComponent extends Component {
 
   render() {
     return (
-      <div className="mt-3 mb-5 mx-1 mx-sm-2 mx-lg-5">
+      <div className="mt-3 mb-3 mx-1 mx-sm-2 mx-lg-5">
         <h5 className="mb-2 font-weight-bold">Notes</h5>
         <small className="form-text">
           <p className="col-12 col-lg-10 px-0">
-            This web app was built to make my timesheet-entering life easier.<br />
+            This web app was initially built to make my timesheet-entering life easier.<br />
             It leverages <a rel="noopener noreferrer" target="_blank" href="https://developer.teamwork.com/projects/introduction/welcome-to-the-teamwork-projects-api">
               Teamwork Projects API
             </a> to communicate directly without any server intervension.<br />

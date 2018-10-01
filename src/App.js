@@ -37,8 +37,8 @@ class AppComponent extends Component {
       <div>
         <nav className="navbar navbar-light bg-quaternary">
           <span className="navbar-brand mb-0 d-flex flex-column flex-sm-row justify-content-center align-items-start align-items-sm-end">
-            <span className="h4 text-light mb-0">Timesheet</span>
-            <small className="text-light pl-2">
+            <span className="h4 text-light mb-0 pr-2">Timesheet</span>
+            <small className="text-light">
               v1.0
             </small>
           </span>
