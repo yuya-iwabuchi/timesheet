@@ -47,11 +47,11 @@ class WeekComponent extends Component {
   }
 
   componentDidMount() {
-    this.mainElement.scrollIntoView({ behavior: 'smooth' });
+    this.mainElement.parentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   componentWillReceiveProps() {
-    this.mainElement.scrollIntoView({ behavior: 'smooth' });
+    this.mainElement.parentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   onTodoItemChange(event) {
