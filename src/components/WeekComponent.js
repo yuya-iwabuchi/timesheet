@@ -281,7 +281,7 @@ class WeekComponent extends Component {
           </span>
         </span>
         <span className="text-primary">
-          Please verify the results at Timesheet project.
+          Please verify the results at <a rel="noopener noreferrer" target="_blank" href="https://blanclink.teamwork.com/#/projects/403677">Timesheet Project</a>.
         </span>
       </div>
     );

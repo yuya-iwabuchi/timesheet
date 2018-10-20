@@ -169,7 +169,7 @@ class AppComponent extends Component {
               onChange={this.onAPIKeyChange}
             />
             <small id="api-key-help" className="form-text text-muted">
-              You can find the API key at your Teamwork Project user account profile.
+              You can find the API key at your <a rel="noopener noreferrer" target="_blank" href="https://blanclink.teamwork.com/#/projects/403677">Teamwork Project</a> user account profile.
               For more details, check <a rel="noopener noreferrer" target="_blank" href="https://developer.teamwork.com/projects/finding-your-url-and-api-key/api-key-and-url">the second section of this link.</a>
             </small>
           </div>
