@@ -39,6 +39,10 @@ class WeekComponent extends Component {
     this.onResetWeek = this.onResetWeek.bind(this);
     this.onResetHours = this.onResetHours.bind(this);
     this.onResetSubmitStatuses = this.onResetSubmitStatuses.bind(this);
+    this.resetWeek = this.resetWeek.bind(this);
+    this.resetHours = this.resetHours.bind(this);
+    this.resetSelectedTask = this.resetSelectedTask.bind(this);
+    this.resetSubmitStatuses = this.resetSubmitStatuses.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.populateWeek = this.populateWeek.bind(this);
     this.onIsBillableChange = this.onIsBillableChange.bind(this);
@@ -104,20 +108,36 @@ class WeekComponent extends Component {
 
   onResetWeek() {
     this.onResetSubmitStatuses();
-    const today = dayjs().startOf('week');
-    this.populateWeek(today);
+    this.resetWeek();
   }
 
   onResetHours() {
     this.onResetSubmitStatuses();
-    this.setState({ hours: [ '', '', '', '', '', '', '' ] });
+    this.resetHours();
   }
-
+  
   onResetSubmitStatuses() {
-    this.setState({ submitStatuses: [ '', '', '', '', '', '', ''] });
+    this.resetSubmitStatuses();
   }
 
-  onSubmit(event) {
+  resetWeek() {
+    const today = dayjs().startOf('week');
+    this.populateWeek(today);
+  }
+
+  resetHours() {
+    this.setState({ hours: ['', '', '', '', '', '', ''] });
+  }
+  
+  resetSelectedTask() {
+    this.setState({ selectedTodoItem: null });
+  }
+
+  resetSubmitStatuses() {
+    this.setState({ submitStatuses: ['', '', '', '', '', '', ''] });
+  }
+
+  async onSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -136,44 +156,47 @@ class WeekComponent extends Component {
     const isbillable = this.state.isBillable ? '1' : '0';
 
     const createUrl = todoId => `${DOMAIN}/tasks/${todoId}/time_entries.json`;
-    week
-      .forEach((day, index) => {
-        if (day.hours === '' || day.hours === 0) return;
-        fetch(createUrl(this.state.selectedTodoItem.id), {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            "Authorization": "BASIC " + window.btoa(this.props.apiKey + ":xxx"),
+    const allSubmits = Promise.all(week.map((day, index) => {
+      if (day.hours === '' || day.hours === 0) return null;
+      return fetch(createUrl(this.state.selectedTodoItem.id), {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          "Authorization": "BASIC " + window.btoa(this.props.apiKey + ":xxx"),
+        },
+        body: JSON.stringify({
+          'time-entry': {
+            date: day.date.format('YYYYMMDD'),
+            time: startTime,
+            hours: Math.floor(day.hours),
+            minutes: Math.floor((day.hours % 1) * 60),
+            isbillable,
           },
-          body: JSON.stringify({
-            'time-entry': {
-              date: day.date.format('YYYYMMDD'),
-              time: startTime,
-              hours: Math.floor(day.hours),
-              minutes: Math.floor((day.hours % 1) * 60),
-              isbillable,
-            },
-          })
         })
-          .then(res => res.json())
-          .then(res => {
-            if (res.status === 'OK' || res.STATUS === 'OK') {
-              this.setState({
-                submitStatuses: this.state.submitStatuses.map((submitStatus, i) => i === index ? 'success' : submitStatus),
-                submitting: false,
-              });
-            } else {
-              throw Error(res.error);
-            }
-          })
-          .catch((err) => {
-            this.setState({
-              submitStatuses: this.state.submitStatuses.map((submitStatus, i) => i === index ? 'failure' : submitStatus),
-            })
-          });
-          ;
       })
+        .then(res => res.json())
+        .then(res => {
+          if (res.status === 'OK' || res.STATUS === 'OK') {
+            this.setState({
+              submitStatuses: this.state.submitStatuses.map((submitStatus, i) => i === index ? 'success' : submitStatus),
+              submitting: false,
+            });
+          } else {
+            throw Error(res.error);
+          }
+        })
+        .catch((err) => {
+          this.setState({
+            submitStatuses: this.state.submitStatuses.map((submitStatus, i) => i === index ? 'failure' : submitStatus),
+          })
+        });
+    }).filter(promise => promise !== null));
+    allSubmits.then(() => {
+      this.resetSelectedTask();
+      this.resetWeek();
+      this.resetHours();
+    })
   }
 
   populateWeek(startOfWeek) {
@@ -203,10 +226,10 @@ class WeekComponent extends Component {
       case null:
         return '';
       case 'failure':
-        return 'far fa-times-circle  fa-lg text-danger';
+        return 'far fa-times-circle fa-lg text-danger';
       case 'success':
       default:
-        return 'far fa-check-circle  fa-lg text-success';
+        return 'far fa-check-circle fa-lg text-success';
     }
   }
 
@@ -227,6 +250,43 @@ class WeekComponent extends Component {
     }
   }
 
+  renderStatusIcon(success, total) {
+    if (total === success) {
+      return <i className="fas fa-check text-success mr-2"></i>;
+    } else if (success > 0) {
+      return <i class="fas fa-exclamation text-warning mr-2"></i>;
+    } else {
+      return <i className="fas fa-times text-danger mr-2"></i>;
+    }
+  }
+
+  statusSuffix(success, total) {
+    if (total === success) {
+      return 'submitted successfully!';
+    } else {
+      return 'submitted successfully.';
+    }
+  }
+
+  renderSubmittedMessage() {
+    const total = this.state.submitStatuses.filter(status => status !== '').length;
+    const success = this.state.submitStatuses.filter(status => status === 'success').length;
+    const submitted = total > 0;
+    return (
+      <div className={`d-flex flex-column align-items-center mb-3 ${submitted ? 'visible' : 'invisible'}`}>
+        <span>
+          {this.renderStatusIcon(success, total)}
+          <span className="text-primary">
+            <b>{success} / {total}</b> {this.statusSuffix(success, total)}
+          </span>
+        </span>
+        <span className="text-primary">
+          Please verify the results at Timesheet project.
+        </span>
+      </div>
+    );
+  }
+
   render() {
     return (
       <section className="mt-3 mb-5 mx-1 mx-sm-2 mx-lg-5" ref={ref => this.mainElement = ref}>
@@ -240,8 +300,14 @@ class WeekComponent extends Component {
           <div className="form-group row mb-5">
             <label htmlFor="taskInput" className="col-md-2 col-form-label">Task</label>
             <div className="col-12 col-md-8 col-lg-auto">
-              <select id="taskInput" className="form-control" onChange={this.onTodoItemChange} aria-describedby="task-select-help">
-                <option value=''>Please Select</option>
+              <select
+                id="taskInput"
+                className="form-control"
+                onChange={this.onTodoItemChange}
+                aria-describedby="task-select-help"
+                value={this.state.selectedTodoItem ? this.state.selectedTodoItem.id : ''}
+              >
+                <option value="">Please Select</option>
                 {this.props.todoItems.filter(item => item['project-id'] === PROJECT_ID).map(item => {
                   return (
                     <option key={item.id} value={item.id}>{item.content}</option>
@@ -250,7 +316,7 @@ class WeekComponent extends Component {
               </select>
             </div>
           </div>
-          <div className="mb-5 p-4 border">
+          <div className="mb-3 p-4 border">
             <div className="d-flex justify-content-center justify-content-md-end align-items-center mb-4">
               <div className="col-12 d-flex flex-wrap align-items-center justify-content-end">
                 <div className="w-100 d-flex justify-content-end">
@@ -358,7 +424,8 @@ class WeekComponent extends Component {
               </div>
             </section>
           </div>
-          <div className="d-flex justify-content-center">
+          <div className="d-flex flex-column align-items-center justify-content-center">
+            {this.renderSubmittedMessage()}
             <button
               type="submit"
               className="btn btn-lg btn-primary col-12 col-md-4 col-lg-2"

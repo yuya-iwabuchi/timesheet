@@ -146,7 +146,6 @@ class AppComponent extends Component {
       case null:
       default:
         return null;
-      
     }
   }
 
