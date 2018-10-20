@@ -5,6 +5,7 @@ import './WeekComponent.scss';
 import { SpinnerComponent } from './SpinnerComponent';
 
 const DOMAIN = 'https://blanclink.teamwork.com';
+const PROJECT_ID = 403677; // Limit to tasks under Timesheet Project
 
 class WeekComponent extends Component {
   constructor() {
@@ -241,7 +242,7 @@ class WeekComponent extends Component {
             <div className="col-12 col-md-8 col-lg-auto">
               <select id="taskInput" className="form-control" onChange={this.onTodoItemChange} aria-describedby="task-select-help">
                 <option value=''>Please Select</option>
-                {this.props.todoItems.map(item => {
+                {this.props.todoItems.filter(item => item['project-id'] === PROJECT_ID).map(item => {
                   return (
                     <option key={item.id} value={item.id}>{item.content}</option>
                   );
