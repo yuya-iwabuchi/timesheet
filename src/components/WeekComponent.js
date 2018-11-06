@@ -10,7 +10,7 @@ const PROJECT_ID = 403677; // Limit to tasks under Timesheet Project
 class WeekComponent extends Component {
   constructor() {
     super();
-    const startOfWeek = dayjs().startOf('week'); // Sunday
+    const startOfWeek = dayjs().startOf('week').add(12, 'hour'); // Sunday
     this.state = {
       startOfWeek,
       days: [
@@ -68,7 +68,7 @@ class WeekComponent extends Component {
 
   onHoursEnter(event, index) {
     this.onResetSubmitStatuses();
-    const newHours = +event.target.value;
+    const newHours = parseFloat(event.target.value);
     this.setState({
       hours: this.state.hours.map((hour, i) => i === index ? newHours: hour),
     })
@@ -293,7 +293,7 @@ class WeekComponent extends Component {
         <h5 className="mb-2 font-weight-bold">Step 2: Submit Timesheet</h5>
         <div className="row mb-4">
           <small id="task-select-help" className="form-text text-muted col-12 col-md-8">
-            Note - Currently you can only submit one task at a time and the hours are in whole number.
+            Note - Currently you can only submit one task at a time. Hours can be entered with decimal number.
           </small>
         </div>
         <form onSubmit={this.onSubmit}>
@@ -398,6 +398,7 @@ class WeekComponent extends Component {
                       value={this.state.hours[index]}
                       min="0"
                       max="24"
+                      step="any"
                     />
                   </div>,
                 ];
