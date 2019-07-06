@@ -16,7 +16,7 @@ class InfoComponent extends Component {
             It should do it's job but there still may be some bugs,
             therefore it is highly recommended to double check the outcome at Teamwork Project every time after you use this web app.<br />
             If you do find some bugs or have some suggestions/feedbacks, feel free to click on the buttons at top right corner and fill them in.<br />
-            You are free to use this web app, but please do so at your own risk.<br />
+            You are free to use this web app, but please do so at your own risk.<br /><br />
             Update: Currently this web app is not functioning due to CORS issue.<br />
           </p>
           <p className="text-right">- Yuya</p>
