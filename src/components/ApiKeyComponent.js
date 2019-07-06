@@ -105,7 +105,7 @@ class AppComponent extends Component {
       });
 
       if (succeeded) {
-        const accountUrl = `${DOMAIN}/me.json`;
+        const accountUrl = `${DOMAIN}/projects/api/v2/me.json`;
         fetch(accountUrl, { headers })
           .then(res => res.json())
           .then(res => {
