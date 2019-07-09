@@ -68,9 +68,12 @@ class WeekComponent extends Component {
 
   onHoursEnter(event, index) {
     this.onResetSubmitStatuses();
-    const newHours = parseFloat(event.target.value);
+    let newHours = parseFloat(event.target.value);
+    if (isNaN(newHours)) {
+      newHours = '';
+    }
     this.setState({
-      hours: this.state.hours.map((hour, i) => i === index ? newHours: hour),
+      hours: this.state.hours.map((hour, i) => i === index ? newHours : hour),
     })
   }
 
